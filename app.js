@@ -16,7 +16,7 @@ const distPath = path.join(__dirname, "dist");
 app.use(express.static(distPath));
 
 // SPA fallback (React Router refresh-safe)
-app.get("*", (_req, res) => {
+app.get(/^(?!\/api).*/, (_req, res) => {
   res.sendFile(path.join(distPath, "index.html"));
 });
 
