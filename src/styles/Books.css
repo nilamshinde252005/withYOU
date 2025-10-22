@@ -1,0 +1,216 @@
+/* Pixel theme — uses your palette and keeps sizes/padding identical */
+:root {
+  --red: #e6fff7;
+  /* pale mint background */
+  --pink: #6c9bff;
+  /* blue-purple frame */
+  --ink: #1b2f3a;
+  /* deep teal ink */
+}
+
+/* Optional: use a bitmap/pixel font for full effect. Add this to index.html head: <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"> Then uncomment the font-family in body below. */
+body {
+  /* font-family: 'Press Start 2P', 'Segoe UI', Roboto, Arial, sans-serif; */
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: none;
+}
+
+/* ------- Category nav (pixel pills) ------- */
+.catbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  /* pixel gap instead of rem */
+  padding-bottom: 20px;
+  justify-content: center;
+  /* center nav for nicer pixel composition */
+  margin: 0 auto 8px;
+  max-width: calc(2 * 520px + 160px);
+  box-sizing: border-box;
+}
+
+/* pixel pill base */
+.catpill {
+  appearance: none;
+  background: var(--white);
+  color: var(--pink);
+  font-weight: 800;
+  padding: 8px 14px;
+  /* pixel padding */
+  border-radius: 6px;
+  /* small squarish corner for pixel vibe */
+  border: 6px solid #000;
+  /* chunky black border to look like a sprite */
+  box-shadow: 10px 10px 0 0 rgba(155, 108, 255, 0.12);
+  /* blocky colored offset */
+  cursor: pointer;
+  font-size: 12px;
+  letter-spacing: 0.6px;
+  transition: transform .08s linear;
+}
+
+/* hover gives a slight lift (pixel-y) */
+.catpill:hover {
+  transform: translateY(-3px);
+}
+
+/* active state — inverted filled tile */
+.catpill--active {
+  background: var(--pink);
+  color: var(--white);
+  border-color: #000;
+  box-shadow: 10px 10px 0 0 rgba(43, 27, 58, 0.18);
+}
+
+/* optional small count badge inside the pill */
+.catpill__count {
+  margin-left: 8px;
+  font-weight: 900;
+  font-size: 11px;
+}
+
+/* ------- Two-column grid for cards (sizes unchanged) ------- */
+.books-grid {
+  display: grid;
+  width: 90%;
+  grid-template-columns: repeat(2, minmax(500px, 1fr));
+  gap: 96px 44px;
+  /* converted your 6rem / 2.75rem to px: 6rem≈96px, 2.75rem≈44px */
+  margin: 56px auto 32px;
+  padding: 0 12px;
+  box-sizing: border-box;
+}
+
+/* ------- Single card (pixel look) ------- */
+.books-card {
+  position: relative;
+  background: var(--red);
+  /* pale lavender base */
+  color: var(--ink);
+  border-radius: 18px;
+  min-height: 240px;
+  /* keep your padding exactly to preserve layout */
+  padding: 1.25rem 1.75rem 1.25rem 300px;
+  /* pixel frame: chunky inner frame + stepped pixel shadow */
+  box-shadow:
+    /* stepped block shadows (pixel feel) */
+    12px 12px 0 0 rgba(43, 27, 58, 0.9), 24px 24px 0 0 rgba(43, 27, 58, 0.6),
+    /* slight soft outer blur to keep depth subtle */
+    0 12px 28px rgba(43, 27, 58, 0.06),
+    /* inner pink bezel like a pixel frame */
+    inset 0 0 0 4px var(--pink);
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: transform .12s linear, box-shadow .12s linear;
+}
+
+/* hover intensifies the pixel shadow and frame */
+.books-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 14px 14px 0 0 rgba(43, 27, 58, 0.95), 28px 28px 0 0 rgba(43, 27, 58, 0.65), 0 22px 48px rgba(43, 27, 58, 0.08), inset 0 0 0 5px #bfa3ff;
+}
+
+/* Pop-out cover top-left — same sizes but pixel-rendered */
+.book-cover {
+  position: absolute;
+  top: -49px;
+  left: 27px;
+  width: 200px;
+  height: 295px;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 4px solid var(--white);
+  box-shadow: 10px 16px 0 0 rgba(43, 27, 58, 0.28), 0 18px 38px rgba(43, 27, 58, 0.12);
+  background: #ddd;
+  image-rendering: pixelated;
+  /* force blocky pixels for retro art */
+  -ms-interpolation-mode: nearest-neighbor;
+}
+
+/* Text stack (colors switched to deep purple ink) */
+.book-title {
+  margin: 0 0 .85rem 0;
+  line-height: 1.15;
+  font-size: 1.35rem;
+  font-weight: 900;
+  letter-spacing: .2px;
+  color: var(--ink);
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.book-title::after {
+  content: "";
+  display: block;
+  width: 56px;
+  height: 6px;
+  background: var(--pink);
+  border-radius: 999px;
+  margin-top: .45rem;
+}
+
+.book-author {
+  margin: .15rem 0 1rem 0;
+  font-weight: 700;
+  opacity: .96;
+  color: var(--ink);
+}
+
+.book-desc {
+  margin: 0;
+  line-height: 1.45;
+  opacity: .96;
+  max-width: 46ch;
+  color: var(--ink);
+}
+
+/* small pixel chip / badge inside card */
+.book-chip {
+  margin-top: 12px;
+  display: inline-block;
+  padding: 6px 10px;
+  background: #ffffff;
+  color: var(--pink);
+  font-weight: 900;
+  border: 4px solid var(--pink);
+  border-radius: 6px;
+  box-shadow: 8px 8px 0 0 rgba(155, 108, 255, 0.16);
+  font-size: 11px;
+}
+
+/* Empty state (softer pixel-friendly) */
+.empty-state {
+  grid-column: 1 / -1;
+  background: #fff7fb;
+  color: #6b7280;
+  border: 2px dashed #ffe6fb;
+  border-radius: 12px;
+  padding: 1.25rem;
+  text-align: center;
+}
+
+/* One column on small screens (keeps sizes intact) */
+@media (max-width: 840px) {
+  .books-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 12px;
+  }
+
+  .books-card {
+    padding-left: 260px;
+    min-height: 220px;
+  }
+
+  .book-cover {
+    width: 230px;
+    height: 190px;
+    image-rendering: pixelated;
+  }
+
+  .catbar {
+    justify-content: flex-start;
+    padding-left: 12px;
+  }
+}

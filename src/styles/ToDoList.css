@@ -1,0 +1,336 @@
+
+:root {
+    --bg: #ffffff;
+    /* pure white */
+    --frame: #111111;
+    /* dark frame */
+    --ink: #111111;
+    /* text ink */
+    --working: #ffb74d;
+    /* working = warm yellow/orange */
+    --stuck: #ff6b6b;
+    /* stuck = warm red */
+    --done: #66d19e;
+    /* done = green */
+    --accent-2: #00aaff;
+    /* blue accent for titles/buttons */
+    --border: 4px;
+    /* reduced chunky border */
+    --shadow-x: 6px;
+    --shadow-y: 6px;
+    --radius: 6px;
+    --font-pixel: "Press Start 2P", monospace;
+    --icon-large: 72px;
+    /* header icons (pencil/flag/calendar/trash) */
+    --icon-medium: 56px;
+    /* right-top icons */
+    --icon-small: 50px;
+}
+
+/* ---------- Base ---------- */
+* {
+    box-sizing: border-box;
+}
+
+.todo-page {
+    margin: 0;
+    padding: 28px;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-pixel);
+    font-size: 13px;
+    line-height: 1.5;
+    image-rendering: pixelated;
+}
+
+/* ---------- Layout & spacing (toolbox breathing room) ---------- */
+.todo-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    /* slightly wider left column */
+    gap: 36px;
+    /* bigger gap between columns */
+    width: min(1200px, 96%);
+    margin: 0 auto;
+    align-items: start;
+}
+
+/* Toolbox container (more internal spacing) */
+.toolbox-card {
+    padding: 22px;
+    /* more padding inside the toolbox */
+    border-radius: var(--radius);
+    border: var(--border) solid var(--frame);
+    background: #fff;
+    box-shadow: var(--shadow-x) var(--shadow-y) 0 rgba(0, 0, 0, 0.08);
+}
+
+/* Make the toolbox tile spacing larger and ensure inner boxes don't touch borders */
+.todo-left {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    padding-top: 4px;
+}
+
+/* Make the right area breathe too */
+.todo-right {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+/* ---------- Titles (spacious) ---------- */
+.task-title {
+    padding: 14px 18px;
+    border: var(--border) solid var(--frame);
+    background: var(--accent-2);
+    color: var(--bg);
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    box-shadow: var(--shadow-x) var(--shadow-y) 0 rgba(0, 0, 0, 0.18);
+    text-transform: uppercase;
+    border-radius: var(--radius);
+}
+
+/* ---------- Inputs & Buttons (bigger, spaced) ---------- */
+.task-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    /* more gap between input & button */
+    margin-top: 6px;
+}
+
+.task-input-wrapper input {
+    padding: 16px 12px;
+    /* bigger input height */
+    border: var(--border) solid var(--frame);
+    font-family: var(--font-pixel);
+    font-size: 13px;
+    background: #fff;
+    color: var(--ink);
+    box-shadow: var(--shadow-x) var(--shadow-y) 0 rgba(0, 0, 0, 0.06);
+    border-radius: 6px;
+}
+
+.task-input-wrapper button {
+    padding: 12px 14px;
+    border: var(--border) solid var(--frame);
+    background: linear-gradient(180deg, #ffd800, #ffc000);
+    color: var(--frame);
+    font-weight: 900;
+    font-family: var(--font-pixel);
+    cursor: pointer;
+    box-shadow: var(--shadow-x) var(--shadow-y) 0 rgba(0, 0, 0, 0.12);
+    border-radius: 6px;
+}
+
+.task-input-wrapper button:active {
+    transform: translateY(2px);
+}
+
+/* ---------- Motivation Box (keeps spacing away from border) ---------- */
+.motivation-box {
+    padding: 14px;
+    border: var(--border) solid var(--frame);
+    background: #00aaff;
+    color: #fff;
+    font-size: 11px;
+    font-style: italic;
+    box-shadow: var(--shadow-x) var(--shadow-y) 0 rgba(0, 0, 0, 0.08);
+    border-radius: 6px;
+}
+
+/* ---------- Pixel Icons (bigger) ---------- */
+.pixel-icons {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.pixel-icons img {
+    width: var(--icon-small);
+    height: var(--icon-small);
+    object-fit: cover;
+
+    box-shadow: var(--shadow-x) var(--shadow-y) 0 rgba(0, 0, 0, 0.12);
+    border-radius: 6px;
+    image-rendering: pixelated;
+}
+
+/* ---------- Table (more spacing between cells, larger header icons) ---------- */
+.table-custom {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 20px 14px;
+    /* more separation between table cells */
+    font-family: var(--font-pixel);
+    background: transparent;
+}
+
+/* Header icons (pencil, flag, calendar, trash) — BIGGER */
+.table-custom thead th {
+    padding-bottom: 6px;
+    border: none;
+    background: transparent;
+}
+
+.table-custom thead th img {
+    height: var(--icon-large);
+    width: var(--icon-large);
+    image-rendering: pixelated;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Body cells — reduce border so they don't merge, more padding */
+.table-custom td {
+    background: #fff;
+    padding: 18px 14px;
+    /* larger padding inside cells */
+    text-align: center;
+    vertical-align: middle;
+    border: calc(var(--border) - 1px) solid rgba(0, 0, 0, 0.85);
+    border-radius: 8px;
+    box-shadow: var(--shadow-x) var(--shadow-y) 0 rgba(0, 0, 0, 0.06);
+    min-width: 130px;
+}
+
+/* clickable text in task cell */
+.table-custom td span {
+    cursor: pointer;
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* Right-top small icons (still large but smaller than header) */
+.todo-right .right-icons {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+}
+
+.todo-right .right-icons img {
+    width: var(--icon-medium);
+    height: var(--icon-medium);
+    border: calc(var(--border) - 1px) solid var(--frame);
+    box-shadow: var(--shadow-x) var(--shadow-y) 0 rgba(0, 0, 0, 0.12);
+    border-radius: 6px;
+    image-rendering: pixelated;
+}
+
+
+.table-custom td.status-working {
+    background: linear-gradient(180deg, rgba(255, 183, 77, 0.95), rgba(255, 167, 51, 0.95)) !important;
+    border-color: rgba(255, 141, 26, 1) !important;
+    color: #2b1400 !important;
+}
+
+.table-custom td.status-stuck {
+    background: linear-gradient(180deg, rgba(255, 107, 107, 0.95), rgba(255, 79, 79, 0.95)) !important;
+    border-color: rgba(230, 59, 59, 1) !important;
+    color: #3b0b0b !important;
+}
+
+.table-custom td.status-done {
+    background: linear-gradient(180deg, rgba(102, 209, 158, 0.95), rgba(47, 191, 145, 0.95)) !important;
+    border-color: rgba(47, 191, 145, 1) !important;
+    color: #042a1a !important;
+}
+
+.table-custom td.status-working .status-select,
+.table-custom td.status-stuck .status-select,
+.table-custom td.status-done .status-select {
+    background: rgba(255, 255, 255, 0.9) !important;
+    /* semi-white so text is readable */
+    color: var(--ink) !important;
+    border: 2px solid rgba(0, 0, 0, 0.12) !important;
+    font-weight: 700 !important;
+}
+
+/* select base */
+.status-select {
+    font-family: var(--font-pixel);
+    font-size: 12px;
+    padding: 6px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+
+
+
+/* ---------- Date picker (keeps space) ---------- */
+.date-picker-no-border {
+    border: none !important;
+    background: transparent;
+    font-family: var(--font-pixel);
+    font-size: 12px;
+    color: var(--accent-2);
+    text-align: center;
+    padding: 8px 6px;
+}
+
+/* ---------- Action buttons bigger & visible ---------- */
+td button {
+    padding: 10px 12px;
+    border: calc(var(--border) - 1px) solid var(--frame);
+    background: linear-gradient(180deg, #ff6b00, #e65500);
+    color: #fff;
+    font-family: var(--font-pixel);
+    cursor: pointer;
+    box-shadow: calc(var(--shadow-x) - 2px) calc(var(--shadow-y) - 2px) 0 rgba(0, 0, 0, 0.08);
+    border-radius: 6px;
+    font-weight: 800;
+}
+
+td button:hover {
+    filter: brightness(0.95);
+}
+
+/* ---------- Inline edit input ---------- */
+td input {
+    padding: 10px;
+    border-radius: 6px;
+    border: 3px solid rgba(0, 0, 0, 0.06);
+    font-size: 12px;
+    font-family: var(--font-pixel);
+}
+
+/* ---------- Helpers & responsive ---------- */
+.empty-state {
+    padding: 22px;
+    text-align: center;
+    font-weight: 900;
+    border: 3px dashed rgba(0, 0, 0, 0.06);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--ink);
+}
+
+@media (max-width: 920px) {
+    .todo-layout {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        padding: 12px;
+    }
+
+    .table-custom td {
+        padding: 12px;
+        font-size: 12px;
+    }
+
+    .table-custom thead th img {
+        height: 56px;
+        width: 56px;
+    }
+
+    .todo-right .right-icons img {
+        width: 48px;
+        height: 48px;
+    }
+}
