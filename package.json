@@ -12,7 +12,9 @@
     "preview": "vite preview",
     "db:studio": "drizzle-kit studio"
   },
-  "engines": { "node": ">=18" },
+  "engines": {
+    "node": "20.x"
+  },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
