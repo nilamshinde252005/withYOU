@@ -44,7 +44,7 @@ function MagicHome() {
             <div className="content">
                 <div className="image-container">
                     <img
-                        src="/icons/sunflower.jpg"
+                        src="/sunflower.jpg"
                         alt="The Magic Book"
                         className="home-img"
                     />
