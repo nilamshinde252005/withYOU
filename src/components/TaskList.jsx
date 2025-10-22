@@ -135,11 +135,11 @@ function TaskList() {
             </div>
 
             <div className="pixel-icons" aria-hidden="true">
-              <img src="/public/decor/3.jpg" alt="flower" />
-              <img src="/public/decor/bunny2.jpg" alt="bunny" />
-              <img src="/public/decor/3.jpg" alt="mushroom" />
-              <img src="public/decor/bunny2.jpg" alt="controller" />
-              <img src="/public/decor/3.jpg" alt="heavy" />
+              <img src="/decor/3.jpg" alt="flower" />
+              <img src="/decor/bunny2.jpg" alt="bunny" />
+              <img src="/decor/3.jpg" alt="mushroom" />
+              <img src="/decor/bunny2.jpg" alt="controller" />
+              <img src="/decor/3.jpg" alt="heavy" />
             </div>
           </div>
         </aside>
@@ -151,11 +151,11 @@ function TaskList() {
 
             {/* extra pixel icons on the right */}
             <div className="pixel-icons" aria-hidden="true" style={{ margin: 0 }}>
-              <img src="/public/decor/2.jpg" alt="coin" />
-              <img src="/public/decor/4.jpg" alt="heart" />
-              <img src="/public/decor/2.jpg" alt="shield" />
-              <img src="/public/decor/4.jpg" alt="potion" />
-              <img src="/public/decor/2.jpg" alt="coin" />
+              <img src="/decor/2.jpg" alt="coin" />
+              <img src="/decor/4.jpg" alt="heart" />
+              <img src="/decor/2.jpg" alt="shield" />
+              <img src="/decor/4.jpg" alt="potion" />
+              <img src="/decor/2.jpg" alt="coin" />
             </div>
           </div>
 
