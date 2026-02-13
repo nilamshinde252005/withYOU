@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "../styles/Login.css";
+import { api } from "../lib/api";
 
 // Tiny inline pixel SVG icons (user + lock) to avoid external assets
 const UserIcon = ({ className = "" }) => (
@@ -36,7 +37,7 @@ function Login() {
     setLoading(true);
 
     try {
-      const res = await axios.get("http://localhost:8080/login", {
+      const res = await api.get("/login", {
         params: { username, password },
       });
 
@@ -44,8 +45,6 @@ function Login() {
 localStorage.setItem("jwtToken", res.data.token); // backward compatible
 
 
-      // (optional) clean old key if it exists
-      localStorage.removeItem("jwtToken");
 
       setTimeout(() => {
         window.location.href = "/home";

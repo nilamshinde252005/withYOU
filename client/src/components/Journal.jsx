@@ -1,68 +1,47 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import ChangeBackground from "./ChangeBackground";
 import "../styles/Journey.css";
-
-const API = "http://localhost:8080";
+import { api, getToken } from "../lib/api";
 
 function Journal() {
   const [ruleText, setRuleText] = useState("");
   const [isLight, setIsLight] = useState(false);
 
-  const token = localStorage.getItem("token"); // standard key
-
-  // fetch the existing rule
   useEffect(() => {
+    const token = getToken();
     if (!token) return;
 
-    axios
-      .get(`${API}/rules`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/json",
-        },
-      })
+    api
+      .get("/rules")
       .then((res) => {
         setRuleText(res.data.rule || "");
       })
       .catch((err) => {
-        console.error("❌ Failed to load rule:", err.response?.data || err.message);
+        console.error(" Failed to load rule:", err.response?.data || err.message);
       });
-  }, [token]);
+  }, []);
 
   const handleSave = async () => {
+    const token = getToken();
     if (!token) {
-      console.error("❌ No token found. Login first.");
+      console.error(" No token found. Login first.");
       return;
     }
 
     try {
-      const res = await axios.post(
-        `${API}/rules`,
-        { rule: ruleText },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        }
-      );
-
-      console.log("✅ Rule saved:", res.data);
+      const res = await api.post("/rules", { rule: ruleText });
+      console.log("Rule saved:", res.data);
     } catch (err) {
-      console.error("❌ Save failed:", err.response?.data || err.message);
+      console.error(" Save failed:", err.response?.data || err.message);
     }
   };
 
-  // auto-numbering on Enter key
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
 
       const lines = ruleText.split("\n");
       const nextNumber = lines.length + 1;
-
       const cursorPosition = e.target.selectionStart;
 
       const before = ruleText.slice(0, cursorPosition);
@@ -71,7 +50,6 @@ function Journal() {
       const newText = `${before}\n${nextNumber}. ${after}`;
       setRuleText(newText);
 
-      // Move cursor to right position after inserting
       setTimeout(() => {
         const textarea = document.querySelector(".journal-entry");
         if (textarea) {

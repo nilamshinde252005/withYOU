@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import axios from "axios";
 import NavBar from "../components/NavBar";
 import ChangeBackground from "../components/ChangeBackground";
 import "../styles/Journey.css";
-
-const API = "http://localhost:8080";
+import { api, getToken } from "../lib/api";
 
 export default function NewPageJournalLight() {
   const navigate = useNavigate();
@@ -13,7 +11,6 @@ export default function NewPageJournalLight() {
   const [searchParams] = useSearchParams();
   const dateFromQuery = searchParams.get("date");
 
-  const [token, setToken] = useState("");
   const [isLight, setIsLight] = useState(false);
 
   const [title, setTitle] = useState("");
@@ -22,36 +19,31 @@ export default function NewPageJournalLight() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const t = localStorage.getItem("token");
-    if (!t) {
-      navigate("/");
-      return;
-    }
-    setToken(t);
+    const t = getToken();
+    if (!t) navigate("/");
   }, [navigate]);
 
   useEffect(() => {
+    const token = getToken();
     if (!token) return;
     if (!id) return;
 
     setLoading(true);
-    axios
-      .get(`${API}/journal/notes/${id}`, {
-        headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
-      })
+    api
+      .get(`/journal/notes/${id}`)
       .then((res) => {
         const n = res.data || {};
         setTitle(n.title || "");
         setBody(n.body || "");
         setDate(n.date || dateFromQuery || new Date().toISOString().slice(0, 10));
       })
-      .catch((err) => console.error("❌ Load note failed:", err.response?.data || err.message))
+      .catch((err) => console.error(" Load note failed:", err.response?.data || err.message))
       .finally(() => setLoading(false));
-  }, [token, id, dateFromQuery]);
+  }, [id, dateFromQuery]);
 
   const handleSave = async () => {
-    const t = localStorage.getItem("token");
-    if (!t) {
+    const token = getToken();
+    if (!token) {
       alert("Please log in first");
       navigate("/");
       return;
@@ -61,35 +53,14 @@ export default function NewPageJournalLight() {
       setLoading(true);
 
       if (id) {
-        await axios.put(
-          `${API}/journal/notes/${id}`,
-          { title, body, date, type: "light" },
-          {
-            headers: {
-              Authorization: `Bearer ${t}`,
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-          }
-        );
+        await api.put(`/journal/notes/${id}`, { title, body, date, type: "light" });
       } else {
-        const created = await axios.post(
-          `${API}/journal/notes`,
-          { title, body, date, type: "light" },
-          {
-            headers: {
-              Authorization: `Bearer ${t}`,
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-          }
-        );
-
+        const created = await api.post(`/journal/notes`, { title, body, date, type: "light" });
         const newId = created.data?.id;
         if (newId) navigate(`/JourneyLight/${newId}`);
       }
     } catch (err) {
-      console.error("❌ Save failed:", err.response?.data || err.message);
+      console.error(" Save failed:", err.response?.data || err.message);
       alert(err.response?.data?.message || "Save failed");
     } finally {
       setLoading(false);
@@ -114,7 +85,7 @@ export default function NewPageJournalLight() {
         <input
           className={`journal-entry ${isLight ? "light" : "dark"}`}
           style={{ minHeight: 44, marginBottom: 10 }}
-          placeholder="Title "
+          placeholder="Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />

@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
 import "../styles/ToDoList.css";
 import NavBar from "./NavBar";
@@ -6,8 +5,7 @@ import Form from "react-bootstrap/Form";
 import Table from "react-bootstrap/Table";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
-const API = "http://localhost:8080";
+import { api, getToken } from "../lib/api";
 
 function TaskList() {
   const [tasks, setTasks] = useState([]);
@@ -15,26 +13,19 @@ function TaskList() {
   const [editingId, setEditingId] = useState(null);
   const [editedTask, setEditedTask] = useState("");
 
-  const getToken = () => localStorage.getItem("token"); // ✅ standard key
-
   // Fetch tasks
   const fetchTasks = async () => {
     const token = getToken();
     if (!token) {
-      console.error("❌ No token found. Login first.");
+      console.error(" No token found. Login first.");
       return;
     }
 
     try {
-      const res = await axios.get(`${API}/login/data`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await api.get("/login/data"); // token auto-attached by interceptor
       setTasks(res.data);
     } catch (err) {
-      console.error(
-        "Error fetching tasks:",
-        err.response?.data?.message || err.message
-      );
+      console.error("Error fetching tasks:", err.response?.data?.message || err.message);
     }
   };
 
@@ -48,17 +39,11 @@ function TaskList() {
     if (!newTask.trim()) return;
 
     try {
-      await axios.post(
-        `${API}/tasks`,
-        { task: newTask, status: "Working", dueDate: null },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        }
-      );
+      await api.post("/tasks", {
+        task: newTask,
+        status: "Working",
+        dueDate: null,
+      });
       setNewTask("");
       fetchTasks();
     } catch (err) {
@@ -75,9 +60,7 @@ function TaskList() {
     }
 
     try {
-      await axios.delete(`${API}/tasks/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await api.delete(`/tasks/${id}`);
       fetchTasks();
     } catch (err) {
       alert(err.response?.data?.message || "Error deleting task");
@@ -93,17 +76,7 @@ function TaskList() {
     }
 
     try {
-      await axios.put(
-        `${API}/tasks/${id}`,
-        { task: editedTask },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        }
-      );
+      await api.put(`/tasks/${id}`, { task: editedTask });
       setEditingId(null);
       setEditedTask("");
       fetchTasks();
@@ -118,17 +91,7 @@ function TaskList() {
     if (!token) return;
 
     try {
-      await axios.put(
-        `${API}/tasks/${id}`,
-        { status: newStatus },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        }
-      );
+      await api.put(`/tasks/${id}`, { status: newStatus });
       fetchTasks();
     } catch (err) {
       console.error("Error updating status:", err.response?.data || err.message);
@@ -142,17 +105,7 @@ function TaskList() {
 
     try {
       const formattedDate = date ? date.toISOString().split("T")[0] : null;
-      await axios.put(
-        `${API}/tasks/${id}`,
-        { dueDate: formattedDate },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        }
-      );
+      await api.put(`/tasks/${id}`, { dueDate: formattedDate });
       fetchTasks();
     } catch (err) {
       console.error("Error updating due date:", err.response?.data || err.message);
@@ -168,7 +121,6 @@ function TaskList() {
       <NavBar />
 
       <div className="todo-layout">
-        {/* LEFT: toolbox / input — compact, pixel tile */}
         <aside className="todo-left" aria-label="task toolbox">
           <div>
             <div className="task-title">To-Do Toolbox</div>
@@ -204,12 +156,10 @@ function TaskList() {
           </div>
         </aside>
 
-        {/* RIGHT: main tasks table — center stage */}
         <main className="todo-right" aria-label="task list">
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <h2 className="task-title">To-Do</h2>
 
-            {/* extra pixel icons on the right */}
             <div className="pixel-icons" aria-hidden="true" style={{ margin: 0 }}>
               <img src="/decor/2.jpg" alt="coin" />
               <img src="/decor/4.jpg" alt="heart" />
@@ -232,7 +182,6 @@ function TaskList() {
             <tbody>
               {tasks.map((t) => (
                 <tr key={t.id}>
-                  {/* Task column */}
                   <td style={{ color: "#000" }}>
                     {editingId === t.id ? (
                       <>
@@ -257,7 +206,6 @@ function TaskList() {
                     )}
                   </td>
 
-                  {/* Status column */}
                   <td
                     className={
                       t.status === "Working"
@@ -281,7 +229,6 @@ function TaskList() {
                     </Form.Select>
                   </td>
 
-                  {/* Due date */}
                   <td>
                     <DatePicker
                       selected={t.dueDate ? new Date(t.dueDate) : null}
@@ -292,7 +239,6 @@ function TaskList() {
                     />
                   </td>
 
-                  {/* Action */}
                   <td>
                     <button onClick={() => handleDelete(t.id)}>🗑️</button>
                   </td>
