@@ -1,9 +1,12 @@
 import axios from "axios";
 
-export const API_BASE = "http://localhost:8080";
+// Use Vercel env var in production, fallback to localhost for dev
+export const API_BASE =
+  import.meta.env.VITE_API_URL || "http://localhost:8080";
 
 export function getToken() {
-  return localStorage.getItem("token");
+  //  backward compatibility (some pages used token, some used jwtToken)
+  return localStorage.getItem("jwtToken") || localStorage.getItem("token");
 }
 
 export const api = axios.create({
