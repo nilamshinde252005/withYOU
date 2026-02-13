@@ -1,36 +1,33 @@
-// server/app.js
-require("dotenv").config(); // ✅ MUST be first
-
 const express = require("express");
 const cors = require("cors");
 
 const app = express();
 
-// allow your Vercel site + localhost
-const allowedOrigins = [
-  "http://localhost:5173",
-  process.env.CLIENT_URL,
-].filter(Boolean); // ✅ remove undefined
+app.use(express.json());
 
+// ✅ CORS (allow localhost + your Vercel domains)
+const allowlist = [
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "https://with-you-five.vercel.app",
+  "https://with-you-git-main-nilams-projects-b76e9d8f.vercel.app",
+];
+
+// ✅ ALSO allow any *.vercel.app preview deployments automatically
 app.use(
   cors({
-    origin: function (origin, cb) {
-      // allow curl/postman (no origin) + allowed sites
+    origin: (origin, cb) => {
+      // allow curl/postman/no-origin
       if (!origin) return cb(null, true);
-      if (allowedOrigins.includes(origin)) return cb(null, true);
+
+      // exact allowlist
+      if (allowlist.includes(origin)) return cb(null, true);
+
+      // allow any vercel preview domain
+      if (origin.endsWith(".vercel.app")) return cb(null, true);
+
       return cb(new Error("Not allowed by CORS"));
     },
     credentials: true,
   })
 );
-
-app.use(express.json());
-
-// ✅ ROUTES (after dotenv + middleware)
-require("./routes/secure/userDataRoute")(app);
-require("./routes/loginRoute")(app);
-
-app.get("/", (_req, res) => res.send("API running ✅"));
-
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => console.log(`Server on ${PORT}`));
