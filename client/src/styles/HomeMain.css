@@ -1,0 +1,213 @@
+/* Home.css — Pixel Retro overhaul for your Home component
+   Recommended: add this to index.html <head>:
+   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+*/
+
+:root{
+    --bg: #fff7fb;        /* page background */
+    --panel: #fff2ea;     /* card/panel background */
+    --ink: #21303a;       /* main text */
+    --accent: #ffd166;    /* yellow */
+    --accent-2: #bde0fe;  /* blue */
+    --accent-3: #d6c7ff;  /* purple */
+    --muted: #e9edf2;     /* borders */
+    --frame: #2f2f2f;     /* strong frame color */
+    --card-border: 10px;  /* chunky border */
+    --radius: 12px;
+    --shadow: rgba(0,0,0,0.08);
+  }
+  
+  /* base layout */
+  .homepage{
+    min-height:100vh;
+    display:grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 28px;
+    align-items:start;
+    justify-items:center;
+  }
+  
+  /* NAVBAR (if your NavBar outputs <nav>) */
+  .homepage nav, .homepage .nav {
+    width: 92%;
+    max-width: 1100px;
+    border: var(--card-border) solid var(--muted);
+    background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.95));
+    padding: 10px 14px;
+    border-radius: 10px;
+    box-shadow: 0 10px 0 var(--shadow);
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  
+  /* HERO / Quote row */
+  .homepage > h2 {
+    width: 92%;
+    max-width: 1100px;
+    margin: 0 auto;
+    display:flex;
+    align-items:center;
+    gap: 0.8rem;
+    justify-content:flex-start;
+    padding: 12px;
+    border-radius: 8px;
+    border: 8px solid var(--muted);
+    background: linear-gradient(180deg, var(--panel), #fff);
+    box-shadow: 0 10px 0 var(--shadow);
+    font-size: 14px;
+  }
+  
+  /* flower icon */
+  .homepage > h2 img { width:44px; height:44px; image-rendering: pixelated; }
+  
+  /* PROMPT BOX + bunny */
+  .prompt-box{
+    width: 80%;
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    border: var(--card-border) solid var(--muted);
+    border-radius: 14px;
+    background: linear-gradient(180deg,#ffffff, var(--panel));
+    padding: 20px;
+    box-shadow: 0 14px 0 var(--shadow);
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    overflow:visible;
+  }
+  
+  /* text inside prompt box */
+  .prompt-text{
+    font-size: 12px;
+    line-height: 1.1;
+    margin: 0;
+    color: var(--ink);
+    padding-right: 8px;
+  }
+  
+  /* bunny sprite outside */
+  .bunny-outside{
+    position: absolute;
+    right: -28px;
+    top: -22px;
+    width: 110px;
+    height: 110px;
+    image-rendering: pixelated; /* keeps pixel art crisp */
+    transform: rotate(-6deg);
+    transition: transform 240ms ease;
+    filter: drop-shadow(0 6px 0 rgba(0,0,0,0.06));
+  }
+  .bunny-outside:hover{ transform: rotate(-2deg) translateY(-6px); }
+  
+  /* FEATURE GRID */
+  .feature-grid{
+    width: 92%;
+    max-width: 1100px;
+    margin: 0 auto;
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    align-items: stretch;
+  }
+  
+  /* each FeatureGrid child — if FeatureGrid root is a div, this style will apply
+     If FeatureGrid renders other markup, it should still get styled by these selectors.
+  */
+  .feature-grid > * {
+    background: var(--panel);
+    border: var(--card-border) solid var(--muted);
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: 0 14px 0 var(--shadow);
+    display:flex;
+    flex-direction:column;
+    gap: 10px;
+    align-items:flex-start;
+    transition: transform 120ms linear, box-shadow 120ms linear;
+    position: relative;
+  }
+  
+  /* hover / active */
+  .feature-grid > *:hover{ transform: translateY(-6px); box-shadow: 0 20px 0 rgba(0,0,0,0.1); }
+  
+  /* inside card layout */
+  .feature-grid .title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    width:100%;
+  }
+  .feature-grid .title img{
+    width:48px;
+    height:48px;
+    image-rendering: pixelated;
+    border-radius:8px;
+    border:6px solid var(--muted);
+    background: white;
+  }
+  .feature-grid h3{
+    margin:0;
+    font-size:13px;
+    text-transform:uppercase;
+  }
+  .feature-grid p{
+    margin:0;
+    font-size:11px;
+    color:#333;
+  }
+  
+  /* action button inside feature card */
+  .feature-grid button{
+    margin-top:auto;
+    align-self:stretch;
+    border: 8px solid var(--muted);
+    padding: 10px;
+    border-radius:10px;
+    background: var(--accent);
+    cursor:pointer;
+    font-family: inherit;
+    font-size:11px;
+    box-shadow: 0 8px 0 rgba(0,0,0,0.06);
+    text-transform:uppercase;
+  }
+  
+  /* footer */
+  .footer{
+    width:92%;
+    max-width:1100px;
+    margin: 6px auto 40px auto;
+    text-align:center;
+    font-size:11px;
+    opacity:0.9;
+    color:var(--ink);
+  }
+  
+  /* small pixel accent details */
+  .homepage .pixel-dot {
+    width:8px; height:8px; border-radius:2px;
+    background: var(--accent); display:inline-block; margin-right:6px;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.06);
+  }
+  
+  /* responsive: single column for smaller screens */
+  @media (max-width: 860px) {
+    .feature-grid{ grid-template-columns: 1fr; width:92%; }
+    .bunny-outside{ display:none; }
+    .prompt-box{ padding: 14px; }
+    .homepage > h2{ font-size:12px; padding:10px; }
+  }
+  
+  /* helper: ensure images look pixel-perfect */
+  img { image-rendering: pixelated; }
+  
+  /* optional: tiny animated floating pixel */
+  @keyframes floaty {
+    0% { transform: translateY(0) rotate(-6deg); }
+    50% { transform: translateY(-6px) rotate(-3deg); }
+    100% { transform: translateY(0) rotate(-6deg); }
+  }
+  .bunny-outside { animation: floaty 4.5s ease-in-out infinite; }
+  

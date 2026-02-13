@@ -1,0 +1,34 @@
+.about-wrap {
+  padding: 3rem 6rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  color: var(--ink);
+  font-family: "Inter", sans-serif;
+}
+
+.about-intro {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.about-section {
+  margin-bottom: 2.5rem;
+}
+
+.about-section h3 {
+  color: var(--lav);
+  margin-bottom: 0.8rem;
+}
+
+.about-section ul,
+.about-section ol {
+  margin-left: 1.5rem;
+  line-height: 1.7;
+}
+
+.about-footer {
+  margin-top: 3rem;
+  text-align: center;
+  opacity: 0.8;
+  font-size: 0.9rem;
+}
