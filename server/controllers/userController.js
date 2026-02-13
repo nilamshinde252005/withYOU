@@ -157,4 +157,20 @@ function getEmailFromPayload(req, res) {
 module.exports = {
   userController,
   registerController,
+
+  getToDos,
+  addToDo,
+  updateToDo,
+  deleteToDo,
+
+  getRules,
+  addOrUpdateRules,
+
+  getJournalNotes,
+  createJournalNote,
+  getJournalNoteById,
+  updateJournalNote,
+
+  getMagicEntry,
+  upsertMagicEntry,
 };
