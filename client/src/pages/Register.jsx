@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
-import "../styles/Login.css"; 
+import { Link, useNavigate } from "react-router-dom";
+import "../styles/Login.css";
+import { api } from "../api/api"; // <-- use your axios instance
 
 const UserIcon = ({ className = "" }) => (
   <svg className={className} width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -25,6 +26,8 @@ const LockIcon = ({ className = "" }) => (
 );
 
 export default function Register() {
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -40,38 +43,35 @@ export default function Register() {
     return null;
   };
 
-
   const handleRegister = async () => {
     setError("");
-
     const v = validate();
-    if (v) {
-      setError(v);
-      return;
-    }
+    if (v) return setError(v);
+
     setLoading(true);
 
     try {
-       // attempt to register against backend endpoint used by Login
-      const res = await axios.post("http://localhost:8080/register", { username, password });
-      // expecting { success: true, message: '', token?: '' }
+      // ✅ backend register (uses VITE_API_URL base)
+      const res = await api.post("/register", { username, password });
+
       if (res.data?.token) {
-        // if backend returns token, store and navigate
         localStorage.setItem("jwtToken", res.data.token);
       }
-      // navigate to login (small delay for UX)
-      setTimeout(() => (window.location.href = "/"), 250);
-    } 
-      catch (err) {
-      // If backend isn't available, fall back to localStorage-based user list
+
+      // ✅ go to login
+      navigate("/");
+    } catch (err) {
+      // fallback localStorage (your old behavior)
       try {
         const raw = localStorage.getItem("userInformation");
         const users = raw ? JSON.parse(raw) : [];
+
         if (users.some((u) => u.username === username)) {
           setError("An account with that email already exists (local fallback). Try logging in.");
           setLoading(false);
           return;
         }
+
         const newUser = {
           username,
           password,
@@ -81,14 +81,17 @@ export default function Register() {
           userLightJournal: [],
           magicEntries: {}
         };
+
         users.push(newUser);
         localStorage.setItem("userInformation", JSON.stringify(users));
-        // success
-        setTimeout(() => (window.location.href = "/home"), 250);
+
+        // your fallback used to go home
+        navigate("/home");
       } catch (fallbackErr) {
         setError(err.response?.data?.message || "Registration failed.");
-        setLoading(false);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -113,12 +116,19 @@ export default function Register() {
               <span className="p s2" />
             </div>
           </div>
+
           <div className="title-block">
             <h1 id="register-title">Create Account</h1>
             <div className="subtitle">heheeheee</div>
           </div>
-          <div className="avatar-slot" title="Optional avatar: drop a 64×64 PNG into /public/avatars/avatar1.png">
-            <img src="/avatars/avatar1.png" alt="" onError={(e) => (e.currentTarget.style.visibility = "hidden")} />
+
+          {/* ✅ this path requires: public/avatars/avatar1.png */}
+          <div className="avatar-slot" title="Optional avatar: put a PNG in /public/avatars/avatar1.png">
+            <img
+              src="/avatars/avatar1.png"
+              alt=""
+              onError={(e) => (e.currentTarget.style.visibility = "hidden")}
+            />
           </div>
         </div>
 
@@ -179,14 +189,21 @@ export default function Register() {
             <button type="submit" className={`pixel-btn ${loading ? "loading" : ""}`} disabled={loading}>
               {loading ? "Creating…" : "Create account"}
             </button>
-            <button type="button" className="pixel-btn " onClick={() => { setUsername(""); setPassword(""); setConfirm(""); setError(""); }}>
+            <button
+              type="button"
+              className="pixel-btn"
+              onClick={() => { setUsername(""); setPassword(""); setConfirm(""); setError(""); }}
+            >
               Reset
             </button>
           </div>
 
           {error && <p className="error">{error}</p>}
 
-          <div className="tiny-note">Already have an account? <a href="/">Sign in</a></div>
+          {/* ✅ use Link, not <a href> (prevents full page reload) */}
+          <div className="tiny-note">
+            Already have an account? <Link to="/">Sign in</Link>
+          </div>
         </form>
 
         <div className="decor-row">
