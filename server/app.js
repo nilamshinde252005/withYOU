@@ -5,6 +5,7 @@ const express = require("express");
 const cors = require("cors");
 
 const loginRoute = require("./routes/loginRoute");
+const userDataRoute = require("./routes/secure/userDataRoute");
 
 const app = express();
 app.use(express.json());
@@ -33,6 +34,7 @@ app.get("/health", (req, res) => res.status(200).send("ok"));
 
 // Register only existing routes
 loginRoute(app);
+userDataRoute(app);
 
 // Error handler (so CORS errors show properly)
 app.use((err, req, res, next) => {
