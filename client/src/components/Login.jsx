@@ -37,9 +37,8 @@ function Login() {
     setLoading(true);
 
     try {
-      const res = await api.get("/login", {
-        params: { username, password },
-      });
+      const res = await api.post("/login", { username, password });
+
 
       localStorage.setItem("token", res.data.token);
 localStorage.setItem("jwtToken", res.data.token); // backward compatible
